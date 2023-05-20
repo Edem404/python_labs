@@ -27,7 +27,7 @@ class DeskManager:
             :param min_height_in_centimeters:
             :return List of desks with minimum height greater than the specified value.:
         """
-        return [desk for desk in self.__list_of_desk if desk.width > min_height_in_centimeters]
+        return list(filter(lambda desk: desk.min_height > min_height_in_centimeters, self.__list_of_desk))
 
     def find_all_with_width_more_than(self, width_in_centimeters):
         """
@@ -35,7 +35,7 @@ class DeskManager:
             :param width_in_centimeters:
             :return List of desks with width more than the specified value.::
         """
-        return [desk for desk in self.__list_of_desk if desk.width > width_in_centimeters]
+        return list(filter(lambda desk: desk.width > width_in_centimeters, self.__list_of_desk))
 
 
 if __name__ == "__main__":
