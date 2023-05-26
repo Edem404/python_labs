@@ -30,7 +30,6 @@ class AbstractDesk(ABC):
             adjust the height of the desk by the specified number of centimeters.
             :param centimeters:
         """
-        pass
 
     @abstractmethod
     def move_down(self, centimeters):
@@ -38,7 +37,6 @@ class AbstractDesk(ABC):
             move down the height of the desk by the specified number of centimeters.
             :param centimeters:
         """
-        pass
 
     def __str__(self):
         """
