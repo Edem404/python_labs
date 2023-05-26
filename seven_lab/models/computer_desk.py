@@ -1,19 +1,15 @@
 """
-    import abstract basic class and abstractmethod decorator
+    import abstract class of desk AbstractDesk
 """
 from seven_lab.models.abstract_desk import AbstractDesk
 
 
-class WritingDesk(AbstractDesk):
+class ComputerDesk(AbstractDesk):
     """
-        WritingDesk class inherits AbstractDesk class and have additional field has_keyboard_trey
+        Computer desk class inherits AbstractDesk class and have additional field has_keyboard_trey
         and override and implements methods from abstract class
-        has static private field __instance
     """
-    __instance = None
-
-    def __init__(self, width=0, length=0, current_height=0,
-                 max_height=0, min_height=0, num_of_drawers=0, has_keyboard_trey=False):
+    def __init__(self, width, length, current_height, max_height, min_height, num_of_drawers, has_keyboard_trey):
         super().__init__(width, length, current_height, max_height, min_height, num_of_drawers)
         self.has_keyboard_trey = has_keyboard_trey
 
@@ -43,14 +39,3 @@ class WritingDesk(AbstractDesk):
         """
         return f"{super().__str__()}" \
                f"num_of_journals={self.has_keyboard_trey})"
-
-    @staticmethod
-    def get_instance():
-        """
-            method need to return default object
-            __instance field assigned once and after this method always will be return __instance
-            :return: WritingDesk
-        """
-        if WritingDesk.__instance is None:
-            WritingDesk.__instance = WritingDesk()
-        return WritingDesk()
