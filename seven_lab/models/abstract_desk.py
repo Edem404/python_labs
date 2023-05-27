@@ -40,7 +40,7 @@ class AbstractDesk(ABC):
             :param centimeters: param on which methods move down our desk
         """
 
-    def get_attributes_by_type(self, data_type):
+    def get_fields_by_type(self, data_type):
         """
         get attributes in object by some type
         :param data_type:
