@@ -47,7 +47,7 @@ class AbstractDesk(ABC):
         :return:
         """
         return {key: value for key, value in self.__dict__.items()
-                if isinstance(value, data_type) and value is not True and value is not False}
+                if isinstance(value, data_type)}
 
     def __str__(self):
         """
