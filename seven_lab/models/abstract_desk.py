@@ -62,3 +62,11 @@ class AbstractDesk(ABC):
         :return: length of material_type_set
         """
         return len(self.material_type_set)
+
+    def dict_of_type(self, data_type):
+        """
+        get attributes in object by some type
+        :param data_type:
+        :return:
+        """
+        return {key: value for key, value in self.__dict__.items() if isinstance(value, data_type)}
