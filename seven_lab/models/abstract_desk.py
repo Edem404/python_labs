@@ -40,15 +40,6 @@ class AbstractDesk(ABC):
             :param centimeters: param on which methods move down our desk
         """
 
-    def get_fields_by_type(self, data_type):
-        """
-        get attributes in object by some type
-        :param data_type:
-        :return:
-        """
-        return {key: value for key, value in self.__dict__.items()
-                if isinstance(value, data_type)}
-
     def __str__(self):
         """
             :return return a string representation of desk:
