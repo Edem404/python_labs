@@ -2,6 +2,8 @@
     import abstract basic class and abstractmethod decorator
 """
 from seven_lab.models.abstract_desk import AbstractDesk
+from seven_lab.custom_exception.custom_exceptions import AlreadyMaxAllowableValueError
+from seven_lab.custom_decorators.exception_logger import exception_logger
 
 
 class WritingDesk(AbstractDesk):
@@ -18,11 +20,14 @@ class WritingDesk(AbstractDesk):
         self.material_type_set = {"lypa", "grab"}
         self.has_keyboard_trey = has_keyboard_trey
 
+    @exception_logger(AlreadyMaxAllowableValueError, "console")
     def adjust_height(self, centimeters):
         """
             adjust the height of the desk by the specified number of centimeters.
             :param centimeters: param on which methods adjust height of desk
         """
+        if self.current_height == self.max_height:
+            raise AlreadyMaxAllowableValueError("Value already maximum allowed")
         if self.current_height + centimeters > self.max_height:
             self.current_height = self.max_height
 

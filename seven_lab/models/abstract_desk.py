@@ -2,6 +2,8 @@
     import abstract basic class and abstractmethod decorator
 """
 from abc import ABC, abstractmethod
+from seven_lab.custom_exception.custom_exceptions import WrongTypeOfArgumentError
+from seven_lab.custom_decorators.exception_logger import exception_logger
 
 
 class AbstractDesk(ABC):
@@ -63,10 +65,19 @@ class AbstractDesk(ABC):
         """
         return len(self.material_type_set)
 
+    def check_fields_type(self, data_type):
+        for field_name, field_value in self.__dict__.items():
+            if isinstance(field_value, data_type):
+                return True
+            else:
+                raise WrongTypeOfArgumentError("Wrong type of argument, class don`t have fields with this data type")
+
+    @exception_logger(WrongTypeOfArgumentError, "console")
     def dict_of_type(self, data_type):
         """
         get attributes in object by some type
         :param data_type:
         :return:
         """
-        return {key: value for key, value in self.__dict__.items() if isinstance(value, data_type)}
+        if self.check_fields_type(data_type):
+            return {key: value for key, value in self.__dict__.items() if isinstance(value, data_type)}
