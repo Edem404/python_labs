@@ -2,56 +2,17 @@
     packages of models in manager.py
 """
 
+from seven_lab.models.abstract_desk import AbstractDesk
 from seven_lab.models.computer_desk import ComputerDesk
 from seven_lab.models.coffee_table import CoffeeTable
 from seven_lab.models.dressing_table import DressingTable
 from seven_lab.models.writing_desk import WritingDesk
 from seven_lab.manager.set_manager import SetManager
-
-
-def log_parameters(func):
-    """
-    decorator that logs the input arguments and output of a function.
-    :param func: function need to decorate
-    :return: inner func
-    """
-    def inner(*args, **kwargs):
-        """
-        inner function that wraps the original function.
-        :param args:
-        :param kwargs:
-        :return: result of the decorated func
-        """
-        print(f"input {args, kwargs}")
-        result_func = func(*args)
-        print("output:")
-        return result_func
-    return inner
-
-
-def iter_length(func):
-    """
-    Decorator that calculates the length of an iterable object returned by a function.
-    :param func: func need to decorate
-    :return: inner function
-    """
-    def inner(*args, **kwargs):
-        """
-        inner function that wraps the original function.
-        :param args:
-        :param kwargs:
-        :return: result of the decorated func
-        """
-        result_of_func = func(*args, **kwargs)
-        if hasattr(result_of_func, '__iter__'):
-            # length = sum(1 for _ in result)
-            length = len(result_of_func)
-        else:
-            length = 1
-        print(f"Length of iterable: {length}")
-        return result_of_func
-
-    return inner
+from seven_lab.custom_decorators.log_parameters import log_parameters
+from seven_lab.custom_decorators.iter_length import iter_length
+from seven_lab.custom_decorators.exception_logger import exception_logger
+from seven_lab.custom_exception.custom_exceptions import NegativeValueOfArgumentError
+from seven_lab.custom_exception.custom_exceptions import WrongTypeOfArgumentError
 
 
 class DeskManager:
@@ -99,6 +60,7 @@ class DeskManager:
         """
         return list(filter(lambda desk: desk.min_height > min_height_in_centimeters, self.__list_of_desk))
 
+    @exception_logger(NegativeValueOfArgumentError, "console")
     @log_parameters
     def find_all_with_width_more_than(self, width_in_centimeters):
         """
@@ -106,6 +68,8 @@ class DeskManager:
             :param width_in_centimeters:
             :return List of desks with width more than the specified value.::
         """
+        if width_in_centimeters < 0:
+            raise NegativeValueOfArgumentError("Negative value of argument")
         return list(filter(lambda desk: desk.width > width_in_centimeters, self.__list_of_desk))
 
     @log_parameters
@@ -114,7 +78,7 @@ class DeskManager:
         :return: list of formatted string with index of element in __list_of_desk and concatenate this index
                  with element by this index
         """
-        return [f"{index}: {desk}" for index, desk in enumerate(self.__list_of_desk, 1)]
+        return [f"{index}: {desk}" for index, desk in enumerate(self.__list_of_desk, 0)]
 
     @log_parameters
     def execute_move_down(self, centimeters):
@@ -160,44 +124,9 @@ if __name__ == "__main__":
     desk_manager.add_desk(CoffeeTable(70, 50, 120, 130, 90, 1, 3))
     desk_manager.add_desk(CoffeeTable(50, 50, 80, 100, 80, 1, 5))
 
-    set_manager = SetManager(desk_manager)
-    # print(set_manager.__getitem__(0))
-    print(set_manager.__len__())
-    print("TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST")
-    # result = desk_manager.combine_desks_and_move_down(5)
-    for i, y in desk_manager.combine_desks_and_move_down(5):
-        print(i, y)
+    some_list = desk_manager.find_all_with_width_more_than(-1)
 
-    print("TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST")
-    writing_desk = WritingDesk(0.0, 1, 0, False, 0, 0, 0)
-    dictionary_test = writing_desk.get_attributes_by_type(int)
-    print(dictionary_test)
+    test_object = WritingDesk(70, 70, 140, 150, 80, 3, True)
+    test_dict = test_object.dict_of_type(str)
 
-    print("TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST")
-    result = desk_manager.check_conditions(lambda desk: desk.current_height <= 0)
-    print(result)
-
-    print("TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST")
-    new_set_manager = iter(SetManager(desk_manager))
-
-    print(next(new_set_manager))
-    print(next(new_set_manager))
-    print(next(new_set_manager))
-    print(next(new_set_manager))
-    print(next(new_set_manager))
-    print(next(new_set_manager))
-    print(next(new_set_manager))
-    print(next(new_set_manager))
-
-    print(3 % 14 + 1)
-    print((27 - 3) % 14 + 1)
-
-    print("================================")
-    for i in desk_manager.find_all_with_min_height_greater_than(70):
-        print(i)
-    print("================================")
-
-    # looking_desks = desk_manager.find_all_with_min_height_greater_than(120)
-    #
-    # for i in looking_desks:
-    #     print(i)
+    test_object.adjust_height(10)
